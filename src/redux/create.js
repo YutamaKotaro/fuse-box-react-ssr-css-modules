@@ -19,7 +19,6 @@ export default function createStore (history, client, data = {}) {
   } else {
     finalCreateStore = applyMiddleware(...middleware)(_createStore)
   }
-  console.log('ii22')
 
   const store = finalCreateStore(reducer, data)
 

@@ -25,13 +25,11 @@ export default class Home extends Component {
   render () {
     const {up, down, count} = this.props
 
-    console.log('in Home');
-    console.log(styles.container, styles);
     return (
       <div>
         <Helmet title='Home' />
         <h1 className={styles.container}>f9999</h1>
-        <p>couggggfefag{count}</p>
+        <p>couggggfefafffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaag{count}</p>
         <p>terusta</p>
         <p>
           <button onClick={() => { console.log('down')}}>Down</button>

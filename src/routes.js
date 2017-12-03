@@ -1,5 +1,4 @@
 import React from 'react'
-import {Route, IndexRoute} from 'react-router'
 import {
   App,
   Home,
@@ -7,12 +6,27 @@ import {
   NotFound
 } from './containers'
 
-export default (store) => {
-  return (
-    <Route path='/' component={App}>
-      <IndexRoute component={Home} />
-      <Route path='about' component={About} />
-      <Route path='*' component={NotFound} />
-    </Route>
-  )
-}
+const routes = [
+  {
+    path: '/',
+    component: App,
+    routes: [
+      {
+        path: '/',
+        component: Home,
+        exact: true,
+      },
+      {
+        path: 'about',
+        component: About,
+        exact: true,
+      },
+      {
+        path: '*',
+        component: NotFound,
+      }
+    ]
+  }
+]
+
+export default routes;

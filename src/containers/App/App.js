@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {asyncConnect} from 'redux-connect'
-import {Link} from 'react-router'
+import { Link } from 'react-router-dom';
 import styled, {injectGlobal} from 'styled-components'
 import {isLoaded as isInfoLoaded, load as loadInfo} from '../../redux/modules/info'
 
@@ -51,18 +50,9 @@ const NavItem = styled(Link)`
   }
 `;
 
-@asyncConnect([{
-  promise: ({store: {dispatch, getState}}) => {
-    const promises = []
-    if (!isInfoLoaded(getState())) {
-      promises.push(dispatch(loadInfo()))
-    }
-    return Promise.all(promises)
-  }
-}])
 @connect(
   (state) => ({
-    info: state.info.data
+    info: state
   }),
   {}
 )

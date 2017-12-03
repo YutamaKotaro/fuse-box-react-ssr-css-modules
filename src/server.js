@@ -6,11 +6,16 @@ import httpProxy from 'http-proxy'
 import React from 'react'
 import ReactDOM from 'react-dom/server'
 import {match} from 'react-router'
-import {syncHistoryWithStore} from 'react-router-redux'
-import {ReduxAsyncConnect, loadOnServer} from 'redux-connect'
-import createHistory from 'react-router/lib/createMemoryHistory'
+import { matchRoutes } from 'react-router-config';
+import {
+  StaticRouter,
+  Route,
+  withRouter,
+} from 'react-router-dom';
+import { renderToString } from 'react-dom/server';
+import createHistory from 'history/createMemoryHistory';
 import {Provider} from 'react-redux'
-
+import routes from './routes'
 import Html from './helpers/Html'
 import createStore from './redux/create'
 import getRoutes from './routes'
@@ -51,38 +56,49 @@ proxy.on('error', (error, req, res) => {
 })
 
 app.use((req, res) => {
-  console.log(req.url)
-  const memoryHistory = createHistory(req.originalUrl)
-  const store = createStore(memoryHistory)
-  const history = syncHistoryWithStore(memoryHistory, store)
+  const history = createHistory()
 
-  function hydrateOnClient () {
-    res.send('<!doctype html>\n' +
-      ReactDOM.renderToString(<Html store={store} />))
+  const memoryHistory = createHistory(req.originalUrl)
+
+  const store = createStore(memoryHistory)
+
+  const renderHtml = (store, htmlContent) => {
+    const html = renderToString(
+      <Html
+        store={store}
+        htmlContent={htmlContent}
+      />,
+    );
+
+    return `<!doctype html>${html}`;
+  };
+
+  const branch = matchRoutes(routes, req.url);
+
+  const redirectUrl = branch.filter(({ route }) => route.component.getRedirectUrl).map(({
+    route,
+    match,
+  }) => route.component.getRedirectUrl(store.getState(), branch[branch.length - 1].route, match.params, queryString.parse(url.parse(match.url).query))).filter(location => location);
+
+  if (redirectUrl.length !== 0) {
+    res.redirect(302, redirectUrl[0]);
   }
 
-  match({ history, routes: getRoutes(store), location: req.originalUrl }, (error, redirectLocation, renderProps) => {
-    if (redirectLocation) {
-      res.redirect(redirectLocation.pathname + redirectLocation.search)
-    } else if (error) {
-      console.error('ROUTER ERROR:', error)
-      res.status(500)
-      hydrateOnClient()
-    } else if (renderProps) {
-      loadOnServer({...renderProps, store}).then(() => {
-        const component = (
-          <Provider store={store} key='provider'>
-            <ReduxAsyncConnect {...renderProps} />
-          </Provider>
-        )
-        global.navigator = {userAgent: req.headers['user-agent']}
-        res.status(200).send('<!doctype html>\n' +
-          ReactDOM.renderToString(<Html component={component} store={store} />))
-      })
-    } else {
-      res.status(404).send('Not found')
-    }
-  })
+  const routerContext = {};
+  const htmlContent = renderToString(
+    <Provider store={store}>
+      <StaticRouter
+        location={req.url}
+        context={routerContext}
+      >
+        <div>hello</div>
+      </StaticRouter>
+    </Provider>,
+  );
+
+  console.log(redirectUrl);
+  const status = routerContext.status === '404' ? 404 : 200;
+  res.status(status).send(renderHtml(store, htmlContent));
 })
 console.log(config.port)
 app.listen(config.port, (err) => {
