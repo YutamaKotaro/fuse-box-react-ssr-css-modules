@@ -16,7 +16,7 @@ const routes = [
         exact: true,
       },
       {
-        path: 'about',
+        path: '/about',
         component: About,
         exact: true,
       },
