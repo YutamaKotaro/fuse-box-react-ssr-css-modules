@@ -19,6 +19,7 @@ class App extends Component {
   render() {
 
     const auth = routes[0];
+    console.log(this.props)
     return (
       <div>
         <Route

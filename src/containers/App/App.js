@@ -2,6 +2,10 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { Link } from 'react-router-dom';
 import styled, {injectGlobal} from 'styled-components'
+import {
+  Route,
+  Switch,
+} from 'react-router-dom';
 import {isLoaded as isInfoLoaded, load as loadInfo} from '../../redux/modules/info'
 
 injectGlobal`
@@ -58,6 +62,7 @@ const NavItem = styled(Link)`
 )
 export default class App extends Component {
   render () {
+    console.log(this.props)
     return (
       <Container>
         <Header>
@@ -67,7 +72,23 @@ export default class App extends Component {
           </nav>
         </Header>
         <Content>
-          {this.props.children}
+        <Switch>
+          {this.props.routes.map((route, i) => (
+            <Route
+              key={i}
+              exact={route.exact || false}
+              path={route.path}
+              isLoggedIn={route.isLoggedIn}
+              render={props => (
+                <route.component
+                  {...this.props}
+                  {...props}
+                  routes={route.routes}
+                />
+              )}
+            />
+          ))}
+        </Switch>
         </Content>
         <Footer>
         </Footer>

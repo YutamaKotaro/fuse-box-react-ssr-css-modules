@@ -12,6 +12,7 @@ global.__CLIENT__ = true
 global.__SERVER__ = false
 global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production'
 
+let prevLocation = {};
 const dest = document.getElementById('content')
 console.log(dest);
 const history = createHistory();
@@ -29,7 +30,7 @@ const renderApp = () => {
   render(
     <Provider store={store}>
       <ConnectedRouter history={history}>
-      <App />
+        <App />
       </ConnectedRouter>
     </Provider>,
     dest
