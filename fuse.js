@@ -7,6 +7,7 @@ const {
   BabelPlugin,
   CSSModules,
   CSSPlugin,
+  ImageBase64Plugin,
 } = require('fuse-box');
 const path = require('path');
 
@@ -70,6 +71,7 @@ Sparky.task('options', () => {
       }),
       EnvPlugin(envVars),
       [CSSModules(), CSSPlugin()],
+      ImageBase64Plugin(),
     ],
   };
 });
