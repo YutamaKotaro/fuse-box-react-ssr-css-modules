@@ -4,16 +4,11 @@
   "description": "SSR, React, redux, ReactRouter, babel, Sass, CSSModules",
   "main": "bin/server.js",
   "scripts": {
-    "start": "concurrent --kill-others \"npm run start-prod\" \"npm run start-prod-api\"",
-    "start-prod": "better-npm-run start-prod",
-    "start-prod-api": "better-npm-run start-prod-api",
-    "build": "better-npm-run build",
-    "start-dev": "better-npm-run start-dev",
-    "start-dev-api": "better-npm-run start-dev-api",
-    "dev": "node fuse",
+    "start": "node fuse",
+    "build:prod": "NODE_ENV=production node fuse prod-build",
+    "start:prod": "node build/server.js",
     "reinstall": "rm package-lock.json && rm -rf node_modules && npm i",
-    "watch-client": "better-npm-run watch-client",
-    "clean": "rimraf .fusebox dist/bundle.js dist/sourcemaps.js.map"
+    "clean": "rm -rf .fusebox && rm -rf dist"
   },
   "repository": {
     "type": "git",
@@ -68,6 +63,7 @@
     "redux-thunk": "^2.2.0",
     "serialize-javascript": "^1.3.0",
     "styled-components": "^1.4.3",
-    "superagent": "^3.4.4"
+    "superagent": "^3.4.4",
+    "uglify-js": "^3.2.1"
   }
 }

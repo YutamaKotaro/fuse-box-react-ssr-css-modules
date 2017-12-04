@@ -63,7 +63,7 @@ Sparky.task('options', () => {
     homeDir: directory.homeDir,
     output: `${directory.outFolder}/$name.js`,
     cache: envVars.NODE_ENV !== 'production',
-    hash: envVars.NODE_ENV === 'production',
+    hash: false,
     plugins: [
       BabelPlugin({
         config: Object.assign({}, { sourceMaps: true }, JSON.parse(babelrc)),
