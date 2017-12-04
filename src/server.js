@@ -14,6 +14,7 @@ import routes from './routes';
 import Html from './helpers/Html';
 import createStore from './redux/create';
 import config from './config';
+import configureStore from './store';
 
 const targetUrl = `http://${config.apiHost}:${config.apiPort}`;
 const app = Express();
@@ -49,11 +50,13 @@ proxy.on('error', (error, req, res) => {
   res.end(JSON.stringify(json));
 });
 
+const initialState = {
+  count: 0,
+};
 app.use((req, res) => {
   const history = createHistory();
-  const memoryHistory = createHistory(req.originalUrl);
 
-  const store = createStore(memoryHistory);
+  const store = configureStore(history, initialState);
 
   const renderHtml = (_store, htmlContent) => {
     const html = renderToString(

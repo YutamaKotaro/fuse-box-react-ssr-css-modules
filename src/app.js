@@ -3,7 +3,9 @@ import {
   Route,
   withRouter,
 } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import * as counterActions from './actions/counter';
 import routes from './routes';
 
 class App extends Component {
@@ -30,10 +32,11 @@ class App extends Component {
   }
 }
 const mapStateToProps = state => ({
-  ...state,
+  router: state.router,
+  counter: state.counter,
 });
 const mapDispatchToProps = dispatch => ({
-  ...dispatch,
+  counterActions: bindActionCreators(counterActions, dispatch),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

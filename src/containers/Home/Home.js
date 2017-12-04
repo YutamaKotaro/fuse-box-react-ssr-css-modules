@@ -1,31 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { up, down } from '../../redux/modules/counter';
-import config from '../../config';
 import styles from './test.css';
 
-@connect(
-  state => ({
-    count: state.counter,
-  }),
-  {
-    up, down,
-  },
-)
 export default class Home extends Component {
   render () {
-    const { up, down, count } = this.props;
+    const {
+      counter: {
+        count,
+      },
+      counterActions,
+    } = this.props;
 
+    console.log(this.props, 'Home');
     return (
       <div>
         <Helmet title="Home" />
-        <h1 className={styles.container}>f9999</h1>
-        <p>couggggfefafffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaag{count}</p>
-        <p>terusta</p>
+        <h1 className={styles.container}>fjjll</h1>
+        <p>coun:{count}</p>
         <p>
-          <button onClick={() => { console.log('down'); }}>Down</button>
-          <button onClick={() => { console.log('up'); }}>Up</button>
+          <button onClick={counterActions.downCounter}>Down</button>
+          <button onClick={counterActions.upCounter}>Up</button>
         </p>
       </div>
     );
