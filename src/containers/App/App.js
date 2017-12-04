@@ -1,12 +1,12 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import styled, {injectGlobal} from 'styled-components'
+import styled, { injectGlobal } from 'styled-components';
 import {
   Route,
   Switch,
 } from 'react-router-dom';
-import {isLoaded as isInfoLoaded, load as loadInfo} from '../../redux/modules/info'
+import { isLoaded as isInfoLoaded, load as loadInfo } from '../../redux/modules/info';
 
 injectGlobal`
   * {
@@ -35,8 +35,8 @@ const Content = styled.main`
 
 const Header = styled.header`
   padding: 20px;
-  background: ${props => props.dark ? '#333' : '#eee'};
-  color: ${props => props.dark ? '#fff' : '#000'};
+  background: ${props => (props.dark ? '#333' : '#eee')};
+  color: ${props => (props.dark ? '#fff' : '#000')};
 `;
 
 const Footer = styled(Header)`
@@ -55,44 +55,43 @@ const NavItem = styled(Link)`
 `;
 
 @connect(
-  (state) => ({
-    info: state
+  state => ({
+    info: state,
   }),
-  {}
+  {},
 )
 export default class App extends Component {
   render () {
-    console.log(this.props)
+    console.log(this.props);
     return (
       <Container>
         <Header>
           <nav>
-            <NavItem to='/'>Homeaaaaaaaaaaaaa</NavItem>
-            <NavItem to='/about'>About</NavItem>
+            <NavItem to="/">Homeaaaaaaaaaaaaa</NavItem>
+            <NavItem to="/about">About</NavItem>
           </nav>
         </Header>
         <Content>
-        <Switch>
-          {this.props.routes.map((route, i) => (
-            <Route
-              key={i}
-              exact={route.exact || false}
-              path={route.path}
-              isLoggedIn={route.isLoggedIn}
-              render={props => (
-                <route.component
-                  {...this.props}
-                  {...props}
-                  routes={route.routes}
-                />
-              )}
-            />
-          ))}
-        </Switch>
+          <Switch>
+            {this.props.routes.map((route, i) => (
+              <Route
+                key={i}
+                exact={route.exact || false}
+                path={route.path}
+                isLoggedIn={route.isLoggedIn}
+                render={props => (
+                  <route.component
+                    {...this.props}
+                    {...props}
+                    routes={route.routes}
+                  />
+                )}
+              />
+            ))}
+          </Switch>
         </Content>
-        <Footer>
-        </Footer>
+        <Footer />
       </Container>
-    )
+    );
   }
 }

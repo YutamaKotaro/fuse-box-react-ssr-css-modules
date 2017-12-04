@@ -1,10 +1,9 @@
-import React from 'react'
 import {
   App,
   Home,
   About,
-  NotFound
-} from './containers'
+  NotFound,
+} from './containers';
 
 const routes = [
   {
@@ -24,9 +23,9 @@ const routes = [
       {
         path: '*',
         component: NotFound,
-      }
-    ]
-  }
-]
+      },
+    ],
+  },
+];
 
 export default routes;
