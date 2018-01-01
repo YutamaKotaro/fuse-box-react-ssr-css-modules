@@ -9,6 +9,8 @@ const {
   CSSPlugin,
   SassPlugin,
   ImageBase64Plugin,
+  CopyPlugin,
+  CSSResourcePlugin,
 } = require('fuse-box');
 const path = require('path');
 const pkg = require('./package.json');
@@ -71,11 +73,15 @@ Sparky.task('options', () => {
     hash: false,
     plugins: [
       EnvPlugin(envVars),
+      [CSSResourcePlugin({ inline: true }), CSSPlugin()],
       [SassPlugin(), CSSModules(), CSSPlugin()],
       BabelPlugin({
         config: Object.assign({}, { sourceMaps: true }, JSON.parse(babelrc)),
       }),
       ImageBase64Plugin(),
+      CopyPlugin({
+        files: ['pages/Home/test.css', 'styles/reset.css'],
+      }),
     ],
   };
 });

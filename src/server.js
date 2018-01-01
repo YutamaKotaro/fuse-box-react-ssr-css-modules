@@ -17,7 +17,7 @@ import { MuiThemeProvider, createMuiTheme, createGenerateClassName } from 'mater
 import { Provider } from 'react-redux';
 import { green, red } from 'material-ui/colors';
 import routes from './routes';
-import Html from './helpers/Html';
+import Html from './utils/Html';
 import config from './config';
 import configureStore from './store';
 import App from './app';

@@ -17,17 +17,15 @@ class App extends Component {
   render() {
     const auth = routes[0];
     return (
-      <div>
-        <Route
-          render={props => (
-            <auth.component
-              {...this.props}
-              {...props}
-              routes={auth.routes}
-            />
-          )}
-        />
-      </div>
+      <Route
+        render={props => (
+          <auth.component
+            {...this.props}
+            {...props}
+            routes={auth.routes}
+          />
+        )}
+      />
     );
   }
 }

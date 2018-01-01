@@ -1,15 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom/server';
 import serialize from 'serialize-javascript';
 import Helmet from 'react-helmet';
-import styleSheet from 'styled-components/lib/models/StyleSheet';
-
-styleSheet.flush();
+import '../styles/reset.css'
 
 export default class Html extends Component {
-  static propTypes = {
-  }
-
   render () {
     const { assets, component, store, css } = this.props;
     const content = component ? ReactDOM.renderToString(component) : '';
