@@ -7,6 +7,7 @@ const {
   BabelPlugin,
   CSSModules,
   CSSPlugin,
+  SassPlugin,
   ImageBase64Plugin,
 } = require('fuse-box');
 const path = require('path');
@@ -58,7 +59,6 @@ Sparky.task('version-file', () => {
   fs.mkdirSync(pubDir);
   fs.writeFileSync(versionFilePath, JSON.stringify({ version: envVars.VERSION }, undefined, 4));
 });
-
 Sparky.task('options', () => {
   options = {
     homeDir: directory.homeDir,
@@ -66,13 +66,18 @@ Sparky.task('options', () => {
     cache: envVars.NODE_ENV !== 'production',
     hash: false,
     plugins: [
+      EnvPlugin(envVars),
+      [SassPlugin(), CSSModules(), CSSPlugin()],
       BabelPlugin({
         config: Object.assign({}, { sourceMaps: true }, JSON.parse(babelrc)),
       }),
-      EnvPlugin(envVars),
-      [CSSModules(), CSSPlugin()],
       ImageBase64Plugin(),
     ],
+    globals: {
+      default: {
+        'aaa': 'ajoi'
+      },
+    },
   };
 });
 
@@ -103,7 +108,7 @@ Sparky.task('build', () => {
     .completed(() => {
       console.log('\x1b[36m%s\x1b[0m', 'server bundled');
     });
-  clientBundle.instructions(' > client.js')
+  clientBundle.instructions('!> [client.js]')
     .completed(() => {
       console.log('\x1b[36m%s\x1b[0m', 'client bundled');
     });
@@ -120,7 +125,6 @@ Sparky.task('start', () => {
 });
 
 Sparky.task('run', async () => {
-  console.log('feawjiofwa');
   const producer = await fuse.run();
   const bundle = producer.bundles.get(`public/${directory.js}/bundle`);
   const vendor = producer.bundles.get(`public/${directory.js}/vendor`);

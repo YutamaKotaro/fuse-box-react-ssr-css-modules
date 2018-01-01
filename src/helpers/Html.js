@@ -17,15 +17,9 @@ export default class Html extends Component {
     const content = component ? ReactDOM.renderToString(component) : '';
     const head = Helmet.rewind();
 
-    console.log(store.getState());
     return (
       <html>
         <head>
-          {head.base.toComponent()}
-          {head.title.toComponent()}
-          {head.meta.toComponent()}
-          {head.link.toComponent()}
-          {head.script.toComponent()}
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
         </head>

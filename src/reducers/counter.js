@@ -8,7 +8,6 @@ const initialState = {
 };
 
 export default function reducer (state = initialState, action = {}) {
-  console.log(action, 'action');
   switch (action.type) {
     case UP_COUNTER:
       return {

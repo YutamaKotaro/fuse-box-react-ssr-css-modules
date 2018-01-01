@@ -3,3 +3,4 @@ node_modules
 .fusebox
 build
 .DS_Store
+.idea/*

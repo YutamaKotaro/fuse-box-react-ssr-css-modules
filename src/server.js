@@ -15,6 +15,7 @@ import Html from './helpers/Html';
 import createStore from './redux/create';
 import config from './config';
 import configureStore from './store';
+import App from './app';
 
 const targetUrl = `http://${config.apiHost}:${config.apiPort}`;
 const app = Express();
@@ -22,6 +23,11 @@ const proxy = httpProxy.createProxyServer({
   target: targetUrl,
   ws: true,
 });
+
+console.log(Object.keys(global));
+global.test ='a';
+console.log(Object.keys(global));
+
 
 const statics = path.resolve('./build/public');
 app.use(Express.static(statics));
@@ -87,12 +93,11 @@ app.use((req, res) => {
         location={req.url}
         context={routerContext}
       >
-        <div>hello</div>
+        <App />
       </StaticRouter>
     </Provider>,
   );
 
-  console.log(redirectUrl);
   const status = routerContext.status === '404' ? 404 : 200;
   res.status(status).send(renderHtml(store, htmlContent));
 });
