@@ -17,17 +17,33 @@ import config from './config';
 import configureStore from './store';
 import App from './app';
 
+import { SheetsRegistry } from 'react-jss/lib/jss';
+import JssProvider from 'react-jss/lib/JssProvider';
+import { create } from 'jss';
+import preset from 'jss-preset-default';
+import { MuiThemeProvider, createMuiTheme, createGenerateClassName } from 'material-ui/styles';
+import { green, red } from 'material-ui/colors';
+const sheetsRegistry = new SheetsRegistry();
+
+// Create a theme instance.
+const theme = createMuiTheme({
+  palette: {
+    primary: green,
+    accent: red,
+    type: 'light',
+  },
+});
+
+// Configure JSS
+const jss = create(preset());
+// const jss = create({ plugins: [...preset().plugins, rtl()] }); // in-case you're supporting rtl
+const generateClassName = createGenerateClassName();
 const targetUrl = `http://${config.apiHost}:${config.apiPort}`;
 const app = Express();
 const proxy = httpProxy.createProxyServer({
   target: targetUrl,
   ws: true,
 });
-
-console.log(Object.keys(global));
-global.test ='a';
-console.log(Object.keys(global));
-
 
 const statics = path.resolve('./build/public');
 app.use(Express.static(statics));
@@ -64,11 +80,12 @@ app.use((req, res) => {
 
   const store = configureStore(history, initialState);
 
-  const renderHtml = (_store, htmlContent) => {
+  const renderHtml = (_store, htmlContent, css) => {
     const html = renderToString(
       <Html
         store={_store}
         htmlContent={htmlContent}
+        css={css}
       />,
     );
 
@@ -88,6 +105,8 @@ app.use((req, res) => {
 
   const routerContext = {};
   const htmlContent = renderToString(
+    <JssProvider registry={sheetsRegistry} jss={jss} generateClassName={generateClassName}>
+      <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
     <Provider store={store}>
       <StaticRouter
         location={req.url}
@@ -95,11 +114,14 @@ app.use((req, res) => {
       >
         <App />
       </StaticRouter>
-    </Provider>,
+    </Provider>
+      </MuiThemeProvider>
+    </JssProvider>,
   );
 
   const status = routerContext.status === '404' ? 404 : 200;
-  res.status(status).send(renderHtml(store, htmlContent));
+  const css = sheetsRegistry.toString();
+  res.status(status).send(renderHtml(store, htmlContent, css));
 });
 app.listen(config.port, (err) => {
   if (err) {

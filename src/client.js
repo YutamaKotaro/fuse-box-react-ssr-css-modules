@@ -1,3 +1,7 @@
+global.requestAnimationFrame = (cb) => {
+  setTimeout(cb, 0);
+}
+
 import process from 'process';
 import React from 'react';
 import { render } from 'react-dom';
@@ -6,11 +10,21 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import configureStore from './store';
 import env from './utils/env';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { green, red } from 'material-ui/colors';
 
+const theme = createMuiTheme({
+  palette: {
+    primary: green,
+    accent: red,
+    type: 'light',
+  },
+});
 
 global.__CLIENT__ = true;
 global.__SERVER__ = false;
 global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production';
+console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
 
 let prevLocation = {};
 const dest = document.getElementById('content');
@@ -29,11 +43,13 @@ const renderApp = () => {
   const store = configureStore(history, initialState);
 
   render(
+    <MuiThemeProvider theme={theme}>
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <App />
       </ConnectedRouter>
-    </Provider>,
+    </Provider>
+    </MuiThemeProvider>,
     dest,
   );
 };

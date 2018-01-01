@@ -8,12 +8,10 @@ styleSheet.flush();
 
 export default class Html extends Component {
   static propTypes = {
-    component: PropTypes.node,
-    store: PropTypes.object,
   }
 
   render () {
-    const { assets, component, store } = this.props;
+    const { assets, component, store, css } = this.props;
     const content = component ? ReactDOM.renderToString(component) : '';
     const head = Helmet.rewind();
 
@@ -27,6 +25,7 @@ export default class Html extends Component {
           <div id="content" dangerouslySetInnerHTML={{ __html: content }} />
           <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__=${serialize(store.getState())}` }} charSet="UTF-8" />
           <script src="js/bundle.js" charSet="UTF-8" />
+          <style id="jss-server-side">{css}</style>
         </body>
       </html>
     );

@@ -11,6 +11,9 @@ const {
   ImageBase64Plugin,
 } = require('fuse-box');
 const path = require('path');
+global.requestAnimationFrame = (cb) => {
+  setTimeout(cb, 0);
+}
 
 const babelrc = fs.readFileSync('./.babelrc');
 const pkg = require('./package.json');
@@ -73,11 +76,6 @@ Sparky.task('options', () => {
       }),
       ImageBase64Plugin(),
     ],
-    globals: {
-      default: {
-        'aaa': 'ajoi'
-      },
-    },
   };
 });
 
@@ -90,7 +88,7 @@ Sparky.task('build', () => {
 
   fuse = FuseBox.init(options);
 
-  clientBundle = fuse.bundle(`public/${directory.js}/vendor`).instructions('~client.js');
+  clientBundle = fuse.bundle(`public/${directory.js}/vendor`).instructions('~raf.js + client.js + raf/polyfill');
 
   // Server Bundle
   serverBundle = fuse.bundle('server').splitConfig({
@@ -108,7 +106,7 @@ Sparky.task('build', () => {
     .completed(() => {
       console.log('\x1b[36m%s\x1b[0m', 'server bundled');
     });
-  clientBundle.instructions('!> [client.js]')
+  clientBundle.instructions('> client.js')
     .completed(() => {
       console.log('\x1b[36m%s\x1b[0m', 'client bundled');
     });
@@ -125,6 +123,7 @@ Sparky.task('start', () => {
 });
 
 Sparky.task('run', async () => {
+  console.log(requestAnimationFrame, '###############')
   const producer = await fuse.run();
   const bundle = producer.bundles.get(`public/${directory.js}/bundle`);
   const vendor = producer.bundles.get(`public/${directory.js}/vendor`);
