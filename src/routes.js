@@ -3,7 +3,7 @@ import {
   Home,
   About,
   NotFound,
-} from './containers';
+} from './pages';
 
 const routes = [
   {
