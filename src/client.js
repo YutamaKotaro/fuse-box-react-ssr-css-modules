@@ -1,17 +1,12 @@
-global.requestAnimationFrame = (cb) => {
-  setTimeout(cb, 0);
-}
-
 import process from 'process';
 import React from 'react';
 import { render } from 'react-dom';
 import createHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
-import configureStore from './store';
-import env from './utils/env';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import { green, red } from 'material-ui/colors';
+import configureStore from './store';
 
 const theme = createMuiTheme({
   palette: {
@@ -24,7 +19,6 @@ const theme = createMuiTheme({
 global.__CLIENT__ = true;
 global.__SERVER__ = false;
 global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production';
-console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
 
 let prevLocation = {};
 const dest = document.getElementById('content');
@@ -44,11 +38,11 @@ const renderApp = () => {
 
   render(
     <MuiThemeProvider theme={theme}>
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <App />
-      </ConnectedRouter>
-    </Provider>
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <App />
+        </ConnectedRouter>
+      </Provider>
     </MuiThemeProvider>,
     dest,
   );
@@ -59,10 +53,9 @@ renderApp();
 
 // Custom HMR, will forcefully reload if you edit a store file or
 // one listed under fullPaths - Keeps state in sync
+/* eslint-disable */
 import { setStatefulModules } from 'fuse-box/modules/fuse-hmr';
 
 setStatefulModules((name) => {
-  console.log(name, '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-  return true;
-    return /stores/.test(name) || /client\/index/.test(name) || /rendered\/state/.test(name);
+  return /stores/.test(name) || /client\/index/.test(name) || /rendered\/state/.test(name);
 });

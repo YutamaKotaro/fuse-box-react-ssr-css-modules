@@ -8,7 +8,8 @@
     "build:prod": "NODE_ENV=production node fuse prod-build",
     "start:prod": "node build/server.js",
     "reinstall": "rm package-lock.json && rm -rf node_modules && npm i",
-    "clean": "rm -rf .fusebox && rm -rf dist"
+    "clean": "rm -rf .fusebox && rm -rf dist",
+    "lint": "eslint src"
   },
   "repository": {
     "type": "git",

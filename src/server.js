@@ -9,20 +9,19 @@ import {
   StaticRouter,
 } from 'react-router-dom';
 import createHistory from 'history/createMemoryHistory';
-import { Provider } from 'react-redux';
-import routes from './routes';
-import Html from './helpers/Html';
-import createStore from './redux/create';
-import config from './config';
-import configureStore from './store';
-import App from './app';
-
 import { SheetsRegistry } from 'react-jss/lib/jss';
 import JssProvider from 'react-jss/lib/JssProvider';
 import { create } from 'jss';
 import preset from 'jss-preset-default';
 import { MuiThemeProvider, createMuiTheme, createGenerateClassName } from 'material-ui/styles';
+import { Provider } from 'react-redux';
 import { green, red } from 'material-ui/colors';
+import routes from './routes';
+import Html from './helpers/Html';
+import config from './config';
+import configureStore from './store';
+import App from './app';
+
 const sheetsRegistry = new SheetsRegistry();
 
 // Create a theme instance.
@@ -107,14 +106,14 @@ app.use((req, res) => {
   const htmlContent = renderToString(
     <JssProvider registry={sheetsRegistry} jss={jss} generateClassName={generateClassName}>
       <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
-    <Provider store={store}>
-      <StaticRouter
-        location={req.url}
-        context={routerContext}
-      >
-        <App />
-      </StaticRouter>
-    </Provider>
+        <Provider store={store}>
+          <StaticRouter
+            location={req.url}
+            context={routerContext}
+          >
+            <App />
+          </StaticRouter>
+        </Provider>
       </MuiThemeProvider>
     </JssProvider>,
   );

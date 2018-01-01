@@ -9,10 +9,10 @@ import * as counterActions from './actions/counter';
 import routes from './routes';
 
 class App extends Component {
-  componentDidUpdate(prevProps) {
-    const { pathname: currentPathname } = this.props.location;
-    const { pathname: prevPathname } = prevProps.location;
-    const isChangedPathname = currentPathname !== prevPathname;
+  componentDidUpdate() {
+    // const { pathname: currentPathname } = this.props.location;
+    // const { pathname: prevPathname } = prevProps.location;
+    // const isChangedPathname = currentPathname !== prevPathname;
   }
   render() {
     const auth = routes[0];

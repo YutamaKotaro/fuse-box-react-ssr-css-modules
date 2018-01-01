@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
 import {
+  Link,
   Route,
   Switch,
 } from 'react-router-dom';
-import { isLoaded as isInfoLoaded, load as loadInfo } from '../../redux/modules/info';
 
 injectGlobal`
   * {
